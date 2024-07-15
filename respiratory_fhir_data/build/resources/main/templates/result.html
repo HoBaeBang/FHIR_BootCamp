@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>결과</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh; /* 최대 높이를 설정하여 스크롤을 가능하게 합니다 */
+      overflow-y: auto; /* 세로 스크롤을 추가합니다 */
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+      text-align: center;
+      color: #333;
+    }
+    pre {
+      background-color: #f8f8f8;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      overflow-x: auto; /* 가로 스크롤을 추가합니다 */
+      white-space: pre-wrap; /* Enable word wrap */
+      max-height: 60vh; /* 최대 높이를 설정하여 스크롤을 가능하게 합니다 */
+    }
+    a, button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      text-decoration: none;
+      border-radius: 4px;
+      text-align: center;
+      cursor: pointer;
+    }
+    a:hover, button:hover {
+      background-color: #0056b3;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>결과</h1>
+  <pre th:text="${response}"></pre>
+  <a href="/api/patients">새 환자 입력</a>
+  <a href="/api/patients/query" class="btn-secondary">환자 정보 조회하기</a>
+  <button onclick="downloadExcel()">엑셀로 다운로드</button>
+</div>
+<script>
+  function downloadExcel() {
+    window.location.href = '/api/patients/downloadExcel';
+  }
+</script>
+</body>
+</html>

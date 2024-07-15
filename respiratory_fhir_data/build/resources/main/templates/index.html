@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FHIR Data Service</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #343a40;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    h1, h2 {
+      color: #007BFF;
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: calc(100% - 22px);
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+    }
+    button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      background: #e9ecef;
+      padding: 15px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    .form-section, .response-section {
+      margin-bottom: 30px;
+    }
+    .form-section {
+      padding: 20px;
+      background-color: #f1f3f5;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .response-section {
+      padding: 20px;
+      background-color: #e9ecef;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>FHIR Data Service</h1>
+
+  <div class="form-section">
+    <h2>Create Patient and Observations</h2>
+    <label for="username">Username:</label>
+    <input type="text" id="username"><br>
+    <label for="birthDate">Birth Date (yyyy-mm-dd):</label>
+    <input type="text" id="birthDate"><br>
+    <label for="address">Address:</label>
+    <input type="text" id="address"><br>
+    <label for="maritalStatus">Marital Status:</label>
+    <input type="text" id="maritalStatus"><br>
+    <label for="FVC">FVC:</label>
+    <input type="number" step="0.01" id="FVC"><br>
+    <label for="FEV1FVC">FEV1/FVC:</label>
+    <input type="number" step="0.01" id="FEV1FVC"><br>
+    <button onclick="createPatient()">Create Patient</button>
+    <pre id="createPatientResponse"></pre>
+  </div>
+
+  <div class="response-section">
+    <h2>Get Patient Data</h2>
+    <label for="patientId">Patient ID:</label>
+    <input type="text" id="patientId">
+    <button onclick="getPatientData()">Get Data</button>
+    <pre id="patientDataResponse"></pre>
+    <button onclick="downloadExcel()">Download as Excel</button>
+  </div>
+</div>
+
+<script>
+  let patientData; // Variable to store patient data
+
+  async function createPatient() {
+    const username = document.getElementById('username').value;
+    const birthDate = document.getElementById('birthDate').value;
+    const address = document.getElementById('address').value;
+    const maritalStatus = document.getElementById('maritalStatus').value;
+    const FVC = parseFloat(document.getElementById('FVC').value);
+    const FEV1FVC = parseFloat(document.getElementById('FEV1FVC').value);
+
+    const requestData = {
+      username,
+      birthDate,
+      address,
+      maritalStatus,
+      FVC,
+      FEV1FVC
+    };
+
+    const response = await fetch('/api/services', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    });
+
+    const data = await response.json();
+    document.getElementById('createPatientResponse').textContent = JSON.stringify(data, null, 2);
+  }
+
+  async function getPatientData() {
+    const patientId = document.getElementById('patientId').value;
+    const response = await fetch(`http://localhost:8080/fhir/Patient/${patientId}/$everything`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    patientData = await response.json(); // Store patient data
+    document.getElementById('patientDataResponse').textContent = JSON.stringify(patientData, null, 2);
+  }
+
+  async function downloadExcel() {
+    const response = await fetch('/api/services/to-excel', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(patientData) // Send stored patient data
+    });
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fhir_data.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+</script>
+</body>
+</html>
