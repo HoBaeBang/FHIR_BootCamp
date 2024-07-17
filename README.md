@@ -5,7 +5,7 @@
 > 프로젝트 구성은 아래와 같으며 각 시스템의 작동방법 및 구성을 설명한다.
 
 ## 2. 아키텍처
-
+<img width="600" height="350" alt="FHIR_system_architecture" src="https://github.com/user-attachments/assets/867bb419-b7e2-47aa-8c7f-e24094fe166a">
 
 
 ## 3. Projcet 구성
