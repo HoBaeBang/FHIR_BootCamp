@@ -48,7 +48,21 @@ FHIR Resource의 검증을 통해 데이터의 신뢰성 확보가 필요하여 
 FHIR Resource의 생성과 동시에 유효성을 검증하게 하기 위하여 FHIR Validation App을 pull 받아 Server 부분만 API 서버로 이용하기 위해서
 구축을 진행하였다. 하지만 앞서 말한것과 같이 시간상 제약으로 인하여 구축은 완료 하였으나, 연동은 아직 하지 못한 상태이다.
 
-## 마무리
+## 4. 결과물(이미지)
+> 1. FHIR Data 생성 및 저장
+>
+> > 웹페이지를 통해서 환자 정보와 호흡기 정보를 받아서 FHIR Data를 생성하고 생성한 FHIR Data를 화면에 표출시켜주고, 그 정보를 JPA Server에 전송하여 저장하는 기능을 개발하였다.  
+> > 해당 과정에서 생성된 FHIR Resource의 검증은 FHIR 검증기를 통해 진행하였다.
+> >
+> > <img width="600" height="350" alt="FHIR_Data_Processing(2)" src="https://github.com/user-attachments/assets/b3d091ca-f91f-493d-9c94-3157b9111240">
+> 2. FHIR Data 조회 및 Export
+>
+> > 1번의 기능에서 저장하였을경우 환자의 id를 확인 할 수 있게 되는데, 환자의 Id를 통해서 기록된 호흡기 정보를 조회한다.
+> > 조회된 정보는 Download as Excel 버튼을 통해서 엑셀의 형태로 다운로드 할 수 있다.
+> >
+> ><img width="600" height="350" alt="FHIR_Data_Processing(1)" src="https://github.com/user-attachments/assets/b2f0ffd3-b09a-4658-8dab-6207d3d90e60">
+
+## 5. 마무리
 > FHIR에 대하여 학습하면서 FHIR Resources에 대해 학습하는 과정을 통해 의료 데이터를 어떻게 좀 더 효율적으로 관리하고 표준화가 가능할까 라는 생각하게 되는 시간이었고,
 > 지속적으로 개발되고 있는 웨어러블 디바이스의 생채신호 등과 함께 FHIR 또한 빠르게 성장해야 FHIR 분야의 선두 주자인 미국 만큼은 아니라도 국내의 여러 병원의 데이터를 통합하고
 > 나아가 국내의 의료데이터 통신의 표준이되어 통신의 표준이 된 후 CDM(Common Data Model)과 함께 사용하며 의학 연구의 효율성과 확장성을 기대 할 수 잇을것 같다.
